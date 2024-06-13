@@ -22,7 +22,7 @@ export default function Home() {
 					<h2 className={styles.hero__subtitle}>
 						Navigate Melodies with Just a Tonic <br /> and Mode Selection
 					</h2>
-					<SignUpButton>SignUp</SignUpButton>
+					<SignUpButton href="/register">SignUp</SignUpButton>
 				</div>
 			</main>
 		</>
