@@ -1,0 +1,11 @@
+.button__signUp {
+	background-color: var(--secondary-color);
+	color: #fff;
+
+	&:hover {
+		outline: 3px solid var(--secondary-color);
+		background-color: transparent;
+		color: var(--secondary-color);
+		scale: 1.2;
+	}
+}
