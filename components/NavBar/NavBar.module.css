@@ -1,12 +1,8 @@
 .navBar__container {
 	display: flex;
 	width: 100%;
+	padding-inline: var(--padding-inline-container);
 	align-items: center;
-}
-
-.credentials__link {
-	text-decoration: none;
-	color: inherit;
 }
 
 .credentials__list {
@@ -14,4 +10,21 @@
 	column-gap: 2rem;
 	list-style: none;
 	margin-inline-start: auto;
+
+	.credentials__link {
+		text-decoration: none;
+		font-family: var(--ff-regular);
+		font-size: 1.2rem;
+		font-weight: 200;
+		color: var(--neutral-color-500);
+		transition: var(--transition-base);
+
+		&:hover {
+			color: var(--primary-color);
+		}
+
+		&:active {
+			color: var(--secondary-color);
+		}
+	}
 }

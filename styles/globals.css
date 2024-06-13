@@ -1,10 +1,20 @@
 :root {
-	--primary-color: #0d728a;
-	--secondary-color: #8a490c;
+	--primary-color: hsl(192, 83%, 30%);
+	--secondary-color: hsl(29, 84%, 29%);
+
+	--neutral-color-100: hsl(0, 0%, 100%);
+	--neutral-color-300: hsl(0, 0%, 75%);
+	--neutral-color-500: hsl(0, 0%, 50%);
+	--neutral-color-700: hsl(0, 0%, 25%);
+	--neutral-color-900: hsl(0, 0%, 0%);
+
+	--ff-regular: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+		Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
 	--border-radius: 0.8em;
+	--padding-inline-container: 10rem;
 
-	--transition-base: 400ms all cubic-bezier(0.98, -0.71, 0.02, 1.63);
+	--transition-base: 300ms all cubic-bezier(0.98, -0.71, 0.02, 1.63);
 }
 
 *,
@@ -16,8 +26,14 @@
 }
 
 body {
-	padding-inline: 10rem;
 	min-height: 100vh;
+}
+
+header {
+	display: flex;
+	width: 100%;
+	height: 7rem;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 main {
@@ -28,10 +44,15 @@ main {
 }
 
 button {
-	padding: 1em;
+	padding: 0.8em 1em;
 	font-size: 1rem;
+	font-family: var(--ff-regular);
 	border-style: none;
 	border-radius: var(--border-radius);
 	cursor: pointer;
 	transition: var(--transition-base);
+
+	&:hover {
+		scale: 1.2;
+	}
 }
