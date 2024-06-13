@@ -1,19 +1,19 @@
 .main {
-	min-height: calc(100vh - 10rem); /* subtracts header height */
+	min-height: calc(100vh - 10rem);
+}
 
-	& :nth-child(1) {
-		font-size: 4rem;
-	}
-	& :nth-child(2) {
-		font-size: 2rem;
-	}
+.hero__container > * {
+	margin-block: 1rem;
+
 }
 
 .hero_maintitle {
 	font-family: var(--mPlusRounded1c);
+	font-size: 4rem;
 }
 
 .hero__subtitle {
 	font-family: var(--ff-regular);
+	font-size: 2rem;
 	font-weight: 600;
 }

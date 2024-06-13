@@ -21,6 +21,7 @@
 
 		&:hover {
 			color: var(--primary-color);
+			text-shadow: var(--shadow-base);
 		}
 
 		&:active {
