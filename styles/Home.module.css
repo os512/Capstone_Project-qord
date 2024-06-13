@@ -1,3 +1,10 @@
+.header {
+  display: flex;
+  height: 10rem;
+  padding: 5rem;
+  
+}
+
 .main {
 	display: flex;
 	flex-direction: column;
@@ -5,10 +12,4 @@
 	align-items: center;
 	padding: 6rem;
 	min-height: 100vh;
-}
-
-@media (prefers-color-scheme: dark) {
-	.qord__logo {
-		filter: invert(1);
-	}
 }
