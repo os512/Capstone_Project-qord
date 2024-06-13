@@ -1,10 +1,9 @@
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./NavBar.module.css";
 
 const NavBar = ({ showAuthLinks }) => (
-	<>
+	<div className={styles.navBar__container}>
 		<div className={styles.qord__logo}>
 			<a href="https://qord-app.vercel.app/">
 				<Image
@@ -33,7 +32,7 @@ const NavBar = ({ showAuthLinks }) => (
 				</>
 			)}
 		</ul>
-	</>
+	</div>
 );
 
 export default NavBar;
