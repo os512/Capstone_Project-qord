@@ -1,15 +1,16 @@
 .header {
-  display: flex;
-  height: 10rem;
-  padding: 5rem;
-  
+	display: flex;
+	height: 10rem;
 }
 
 .main {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-	padding: 6rem;
-	min-height: 100vh;
+	min-height: calc(100vh - 10rem); /* subtracts header height */
+	row-gap: 2.5rem;
+
+	& :nth-child(1) {
+		font-size: 4rem;
+	}
+	& :nth-child(2) {
+		font-size: 2rem;
+	}
 }
