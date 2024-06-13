@@ -1,0 +1,16 @@
+.credentials__link {
+	text-decoration: none;
+	color: inherit;
+}
+
+.credentials__list {
+	display:flex;
+	padding-block: 1rem;
+	align-items: center;
+	justify-content: flex-end;
+	list-style: none;
+	outline: 1px solid green;
+}
+
+.qord__logo {
+}
