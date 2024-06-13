@@ -1,20 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import { M_PLUS_Rounded_1c } from "next/font/google";
 import NavBar from "../components/NavBar/NavBar.js";
 import SignUpButton from "../components/SignUpButton/SignUpButton.js";
-
-const mPlusRounded1cMainTitle = M_PLUS_Rounded_1c({
-	weight: "800",
-	subsets: ["latin"],
-	display: "swap",
-});
-
-const mPlusRounded1cSubTitle = M_PLUS_Rounded_1c({
-	weight: "500",
-	subsets: ["latin"],
-	display: "swap",
-});
 
 export default function Home() {
 	return (
@@ -30,11 +17,13 @@ export default function Home() {
 				<NavBar showAuthLinks={true} />
 			</header>
 			<main className={styles.main}>
-				<h1 className={mPlusRounded1cMainTitle.className}>qord: Your Melodic Compass </h1>
-				<h2 className={mPlusRounded1cSubTitle.className}>
-					Navigate Melodies with Just a Tonic and Mode Selection
-				</h2>
-				<SignUpButton>SignUp</SignUpButton>
+				<div className={styles.hero__container}>
+					<h1 className={styles.hero_maintitle}>qord: Your Melodic Compass </h1>
+					<h2 className={styles.hero__subtitle}>
+						Navigate Melodies with Just a Tonic <br /> and Mode Selection
+					</h2>
+					<SignUpButton>SignUp</SignUpButton>
+				</div>
 			</main>
 		</>
 	);

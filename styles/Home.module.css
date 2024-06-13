@@ -1,11 +1,5 @@
-.header {
-	display: flex;
-	height: 10rem;
-}
-
 .main {
 	min-height: calc(100vh - 10rem); /* subtracts header height */
-	row-gap: 2.5rem;
 
 	& :nth-child(1) {
 		font-size: 4rem;
@@ -13,4 +7,14 @@
 	& :nth-child(2) {
 		font-size: 2rem;
 	}
+}
+
+.hero_maintitle {
+	font-family: var(--mPlusRounded1c);
+	font-weight: 800;
+}
+
+.hero__subtitle {
+	font-family: var(--ff-regular);
+	font-weight: 600;
 }
