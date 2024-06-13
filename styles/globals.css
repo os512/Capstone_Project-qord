@@ -1,6 +1,10 @@
 :root {
 	--primary-color: #0d728a;
 	--secondary-color: #8a490c;
+
+	--border-radius: 0.8em;
+
+	--transition-base: 400ms all cubic-bezier(0.98, -0.71, 0.02, 1.63);
 }
 
 *,
@@ -11,3 +15,23 @@
 	padding: 0;
 }
 
+body {
+	padding-inline: 10rem;
+	min-height: 100vh;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+button {
+	padding: 1em;
+	font-size: 1rem;
+	border-style: none;
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	transition: var(--transition-base);
+}
