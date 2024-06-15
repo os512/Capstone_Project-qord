@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import NavBar from "../components/NavBar/NavBar.js";
-import SignUpButton from "../components/SignUpButton/SignUpButton.js";
+import NavBar from "@components/NavBar/NavBar.js";
+import AuthButton from "@components/AuthButton/AuthButton.js";
 
 export default function Home() {
 	return (
@@ -22,7 +22,7 @@ export default function Home() {
 					<h2 className={styles.hero__subtitle}>
 						Navigate Melodies with Just a Tonic <br /> and Mode Selection
 					</h2>
-					<SignUpButton href="/register">SignUp</SignUpButton>
+					<AuthButton href="/register">SignUp</AuthButton>
 				</div>
 			</main>
 		</>
