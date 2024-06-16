@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+import "@styles/globals.css";
 import { M_PLUS_Rounded_1c } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
