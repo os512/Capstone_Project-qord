@@ -12,7 +12,8 @@ const NavBar = ({ showAuthLinks }) => (
 					className={`${styles.qord__logo}`}
 					width={100}
 					height={72}
-					priority
+					loading="eager"
+					// fetchpriority="true" TODO OS: Why is this still throwing a warning?
 				/>
 			</a>
 		</div>
