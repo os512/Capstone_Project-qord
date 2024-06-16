@@ -4,10 +4,9 @@
 
 .hero__container > * {
 	margin-block: 1rem;
-
 }
 
-.hero_maintitle {
+.hero__maintitle {
 	font-family: var(--mPlusRounded1c);
 	font-size: 4rem;
 }
