@@ -8,6 +8,7 @@ const NavItems = () => {
 
 	if (session) {
 		const userName = session.user.name.split(" ")[0];
+		// TODO OS | Error Handling: When user doesn't have account image on the respective authentication provider (Spotify, Github etc.), Next.js is throwing an error: "Uncaught TypeError: can't access property "default", src is null"!
 		const avatar = session.user.image;
 
 		return (
