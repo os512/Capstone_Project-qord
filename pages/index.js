@@ -1,10 +1,9 @@
 import Link from "next/link";
 import {
 	hero__container,
-	hero__maintitle,
-	hero__subtitle,
-	link__registerServices,
-	getstarted__link,
+	maintitle,
+	subtitle,
+	link__getstarted,
 } from "@styles/Home.module.css";
 import AuthButton from "@components/AuthButton/AuthButton.js";
 import Main from "@components/Main/Main";
@@ -15,27 +14,23 @@ export default function Home() {
 
 	if (session) {
 		return (
-			<Main>
-				<div className={hero__container}>
-					<h1 className={hero__maintitle}>Welcome to qord! </h1>
-					<h2 className={hero__subtitle}>Are you ready?</h2>
-					<Link className={link__registerServices} href={"/registerServices"}>
-						Let&apos;s get started
-					</Link>
-				</div>
-			</Main>
+			<div className={hero__container}>
+				<h1 className={maintitle}>Welcome to qord! </h1>
+				<h2 className={subtitle}>Are you ready?</h2>
+				<Link className={link__getstarted} href={"/getting-started"}>
+					Let&apos;s get started
+				</Link>
+			</div>
 		);
 	}
 
 	return (
-		<Main>
-			<div className={hero__container}>
-				<h1 className={hero__maintitle}>qord: Your Melodic Compass </h1>
-				<h2 className={hero__subtitle}>
-					Navigate Melodies with Just a Tonic <br /> and Mode Selection
-				</h2>
-				<AuthButton href="/register">SignUp</AuthButton>
-			</div>
-		</Main>
+		<div className={hero__container}>
+			<h1 className={maintitle}>qord: Your Melodic Compass </h1>
+			<h2 className={subtitle}>
+				Navigate Melodies with Just a Tonic <br /> and Mode Selection
+			</h2>
+			<AuthButton href="/">SignUp</AuthButton>
+		</div>
 	);
 }

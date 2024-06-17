@@ -2,7 +2,7 @@
 	margin-block: 1rem;
 }
 
-.hero__maintitle {
+.maintitle {
 	font-family: var(--mPlusRounded1c);
 	font-size: 4rem;
 
@@ -12,13 +12,13 @@
 	color: transparent;
 }
 
-.hero__subtitle {
+.subtitle {
 	font-family: var(--ff-regular);
 	font-size: 2rem;
 	font-weight: 600;
 }
 
-.link__registerServices {
+.link__getstarted {
 	display: inline-block;
 	background-color: var(--primary-color);
 	color: #fff;
