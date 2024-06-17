@@ -6,9 +6,10 @@ const AuthButton = () => {
 
 	if (session) {
 		return (
-			<button className={`${btn} ${btn_logout}`} onClick={() => signOut()}>
-				Sign out
-			</button>
+			// <button className={`${btn} ${btn_logout}`} onClick={() => signOut()}>
+			// 	Sign out
+			// </button>
+			null
 		);
 	}
 	return (
