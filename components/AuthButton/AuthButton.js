@@ -1,4 +1,4 @@
-import { btn, btn_login, btn_logout } from "./AuthButton.module.css";
+import { btn, btn_login } from "./AuthButton.module.css";
 import { signIn } from "next-auth/react";
 
 const AuthButton = () => {
