@@ -1,8 +1,8 @@
-import Link from "next/link";
 import Image from "next/image";
+import NavItems from "@components/NavItems/NavItems";
 import styles from "./NavBar.module.css";
 
-const NavBar = ({ showAuthLinks }) => (
+const NavBar = () => (
 	<div className={styles.navBar__container}>
 		<div className={styles.qord__logo}>
 			<a href="https://qord-app.vercel.app/">
@@ -17,22 +17,7 @@ const NavBar = ({ showAuthLinks }) => (
 				/>
 			</a>
 		</div>
-		<ul className={styles.credentials__list}>
-			{showAuthLinks && (
-				<>
-					<li>
-						<Link className={styles.credentials__link} href={"/login"}>
-							Login
-						</Link>
-					</li>
-					<li>
-						<Link className={styles.credentials__link} href={"/register"}>
-							Register
-						</Link>
-					</li>
-				</>
-			)}
-		</ul>
+		<NavItems />
 	</div>
 );
 
