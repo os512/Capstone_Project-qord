@@ -13,7 +13,7 @@ export default function Main_Layout({ children }) {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header>
-				<NavBar showAuthLinks={true} />
+				<NavBar />
 			</Header>
 			<Main>{children}</Main>
 		</>
