@@ -12,8 +12,6 @@ const NavItems = () => {
 		const userName = session.user.name.split(" ")[0];
 		const avatar = session.user.image;
 
-		console.log("avatar: ", avatar);
-
 		return (
 			<ul className={nav__list}>
 				<li>
