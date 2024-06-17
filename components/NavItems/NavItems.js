@@ -6,8 +6,6 @@ import { signOut, signIn, useSession } from "next-auth/react";
 const NavItems = () => {
 	const { data: session } = useSession();
 
-	console.log("session: ", session);
-
 	if (session) {
 		const userName = session.user.name.split(" ")[0];
 		const avatar = session.user.image;
