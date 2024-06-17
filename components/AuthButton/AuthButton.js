@@ -1,17 +1,7 @@
 import { btn, btn_login, btn_logout } from "./AuthButton.module.css";
-import { signOut, signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 const AuthButton = () => {
-	const { data: session } = useSession();
-
-	if (session) {
-		return (
-			// <button className={`${btn} ${btn_logout}`} onClick={() => signOut()}>
-			// 	Sign out
-			// </button>
-			null
-		);
-	}
 	return (
 		<button className={`${btn} ${btn_login}`} onClick={() => signIn()}>
 			Sign in
