@@ -1,8 +1,31 @@
-  .select {
-	/* Styles for the select element */
+.select__wrapper {
+	margin-block-start: 2rem;
+	overflow: hidden;
+	border-radius: var(--border-radius);
+	padding: 1.5rem 1rem 3rem; /* border width */
+	background-image: var(--gradient-base);
+  transition: var(--transition-base);
+
+  &:hover {
+    scale: 1.1;
   }
-  
-  .selectedOption {
-	/* Styles for the selected option text */
-  }
-  
+}
+
+.select {
+	width: 17.5rem;
+	border: none;
+	background-color: #fff;
+	padding: 1rem;
+	border-radius: var(--border-radius);
+	text-align: center;
+	font-family: var(--ff-regular);
+	font-weight: 800;
+	font-size: 1rem;
+}
+
+.selected__info {
+	margin-block-start: 2.5rem;
+	text-align: center;
+	color: #fff;
+	font-size: 1.5rem;
+}
