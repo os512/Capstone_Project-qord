@@ -17,10 +17,22 @@ const GettingStarted = () => {
 			<>
 				<h1 className={maintitle}>Choose a Mode</h1>
 				<div className={modes__container}>
-					<Link className={`${link__modes} ${link__major}`} href={"/choose-tonic"}>
+					<Link
+						className={`${link__modes} ${link__major}`}
+						href={{
+							pathname: "/choose-tonic",
+							query: { mode: "major" },
+						}}
+					>
 						Major
 					</Link>
-					<Link className={`${link__modes} ${link__minor}`} href={"/choose-tonic"}>
+					<Link
+						className={`${link__modes} ${link__minor}`}
+						href={{
+							pathname: "/choose-tonic",
+							query: { mode: "minor" },
+						}}
+					>
 						Minor
 					</Link>
 				</div>
