@@ -2,8 +2,33 @@
 	font-family: var(--mPlusRounded1c);
 	font-size: 4rem;
 
-	background-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+	background-image: var(--gradient-base);
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
+}
+
+.transmit__mode_and_tonic {
+	display: inline-block;
+	margin-block-start: 2rem;
+	padding: 0.8rem 1rem;
+	border-style: none;
+	border-radius: var(--border-radius);
+	background-color: var(--primary-color);
+	color: #fff;
+	text-decoration: none;
+	font-family: var(--ff-regular);
+	font-size: 1rem;
+	font-weight: 400;
+	cursor: pointer;
+	transition: var(--transition-base);
+
+	&:hover {
+		background-color: transparent;
+		box-shadow: var(--shadow-base);
+		outline: 1px solid var(--primary-color);
+		font-weight: 900;
+		color: var(--secondary-color);
+		scale: 1.2;
+	}
 }
