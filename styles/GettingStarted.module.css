@@ -2,7 +2,7 @@
 	font-family: var(--mPlusRounded1c);
 	font-size: 4rem;
 
-	background-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+	background-image: var(--gradient-base);
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
