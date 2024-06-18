@@ -1,37 +1,51 @@
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
-
+import Link from "next/link";
+import { useRouter } from "next/router";
 import AuthButton from "@components/AuthButton/AuthButton.js";
 import Dropdown from "@components/Dropdown/Dropdown";
 import { signOut, signIn, useSession } from "next-auth/react";
-import {
-	maintitle,
-} from "@styles/ChooseTonic.module.css";
+import { maintitle, transmit__mode_and_tonic } from "@styles/ChooseTonic.module.css";
 
 const ChooseTonic = () => {
 	const { data: session } = useSession();
-	const [data, setData] = useState([]);
+	const [scales, setScales] = useState([]);
 
+	
+	const router = useRouter();
+	const { mode } = router.query;
+	
+	const selectedMode = mode === "major" ? "" : "m";
+	
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchScales = async () => {
 			try {
-				// TODO OS: Implement logic on which `scale` (major, minor) should be fetched based on the user choice about `mode`
 				const response = await fetch("/scales-major.json");
-				const fetchedData = await response.json();
-				setData(fetchedData);
+				const fetchedScales = await response.json();
+				setScales(fetchedScales);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
 		};
-
-		fetchData();
+		
+		fetchScales();
 	}, []);
+
+	console.log(scales);
 
 	if (session) {
 		return (
 			<>
 				<h1 className={maintitle}>Choose a Tonic</h1>
-				<Dropdown data={data} />
+				<Dropdown scales={scales} mode={selectedMode} />
+				<Link
+					className={transmit__mode_and_tonic}
+					href={{
+						pathname: "/result",
+						query: { mode: { mode } },
+					}}
+				>
+					Minor
+				</Link>
 			</>
 		);
 	}
