@@ -18,7 +18,12 @@ const ChooseTonic = () => {
 	useEffect(() => {
 		const fetchScales = async () => {
 			try {
-				const response = await fetch("/scales-major.json");
+				if (!mode) {
+					// Redirect to the 'getting-started' page if 'mode' is not available
+					router.push("/getting-started");
+					return;
+				}
+				const response = await fetch(`/scales-${mode}.json`);
 				const fetchedScales = await response.json();
 				setScales(fetchedScales);
 			} catch (error) {
@@ -43,7 +48,7 @@ const ChooseTonic = () => {
 							query: { mode, scales: JSON.stringify(scales) },
 						}}
 					>
-						Minor
+						Submit
 					</Link>
 				)}
 			</>
