@@ -17,10 +17,10 @@ const GettingStarted = () => {
 			<>
 				<h1 className={maintitle}>Choose a Mode</h1>
 				<div className={modes__container}>
-					<Link className={`${link__modes} ${link__major}`} href={"/getting-started"}>
+					<Link className={`${link__modes} ${link__major}`} href={"/choose-tonic"}>
 						Major
 					</Link>
-					<Link className={`${link__modes} ${link__minor}`} href={"/getting-started"}>
+					<Link className={`${link__modes} ${link__minor}`} href={"/choose-tonic"}>
 						Minor
 					</Link>
 				</div>
