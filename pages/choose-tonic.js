@@ -10,12 +10,11 @@ const ChooseTonic = () => {
 	const { data: session } = useSession();
 	const [scales, setScales] = useState([]);
 
-	
 	const router = useRouter();
 	const { mode } = router.query;
-	
+
 	const selectedMode = mode === "major" ? "" : "m";
-	
+
 	useEffect(() => {
 		const fetchScales = async () => {
 			try {
@@ -26,26 +25,27 @@ const ChooseTonic = () => {
 				console.error("Error fetching data:", error);
 			}
 		};
-		
+
 		fetchScales();
 	}, []);
-
-	console.log(scales);
 
 	if (session) {
 		return (
 			<>
 				<h1 className={maintitle}>Choose a Tonic</h1>
 				<Dropdown scales={scales} mode={selectedMode} />
-				<Link
-					className={transmit__mode_and_tonic}
-					href={{
-						pathname: "/result",
-						query: { mode: { mode } },
-					}}
-				>
-					Minor
-				</Link>
+
+				{scales && (
+					<Link
+						className={transmit__mode_and_tonic}
+						href={{
+							pathname: "/content",
+							query: { mode, scales: JSON.stringify(scales) },
+						}}
+					>
+						Minor
+					</Link>
+				)}
 			</>
 		);
 	}
