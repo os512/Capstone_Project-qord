@@ -1,0 +1,16 @@
+.maintitle {
+	font-family: var(--mPlusRounded1c);
+	font-size: 4rem;
+
+	background-image: var(--gradient-base);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.description {
+	font-family: var(--ff-regular);
+	font-weight: 400;
+	font-size: 1.4rem;
+	line-height: 1.5;
+}
