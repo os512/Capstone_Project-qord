@@ -2,19 +2,24 @@ import { useRouter } from "next/router";
 import { signOut, signIn, useSession } from "next-auth/react";
 import ContentPage from "@components/ContentPage/ContentPage";
 import ScaleNoteSystem from "@components/Vexflow/ScaleNoteSystem";
-import useFetchData from "@utils/useFetchData";
 import prepareScale from "@utils/prepareScale";
-import { stave__wrapper} from "@styles/Content.module.css"
+import { stave__wrapper } from "@styles/Content.module.css";
+import useScaleInfo from "@utils/useScaleInfo";
+import useNotePositions from "@utils/useNotePositions";
 
 const Content = () => {
 	const { data: session } = useSession();
 	const router = useRouter();
 	const { mode, selectedScale } = router.query;
 
-	const { scaleInfo, isLoading, isError } = useFetchData("/scales-info.json");
-
-	if (isError) return <div>failed to load</div>;
-	if (isLoading) return <div>loading...</div>;
+	const { scaleInfo, isLoading: isScaleInfoLoading, isError: isScaleInfoError } = useScaleInfo();
+	const { notePositions, isLoading: isNotePositionsLoading, isError: isNotePositionsError } = useNotePositions();
+  
+	if (isScaleInfoError || isNotePositionsError) return <div>failed to load</div>;
+	if (isScaleInfoLoading || isNotePositionsLoading) return <div>loading...</div>;
+  
+	console.log("scaleInfo: ", scaleInfo);
+	console.log("notePositions: ", notePositions);
 
 	let parsedScale;
 	try {
@@ -37,6 +42,8 @@ const Content = () => {
 	].slice(1)}`;
 
 	const scaleInclOctaveDeclarations = prepareScale(parsedScale);
+
+	// console.log("scaleInclOctaveDeclarations: ", scaleInclOctaveDeclarations);
 
 	return (
 		<>
