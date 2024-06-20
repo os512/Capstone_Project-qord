@@ -2,7 +2,9 @@ import { useRouter } from "next/router";
 import { signOut, signIn, useSession } from "next-auth/react";
 import ContentPage from "@components/ContentPage/ContentPage";
 import ScaleNoteSystem from "@components/Vexflow/ScaleNoteSystem";
+import TriadNoteSystem from "@components/Vexflow/TriadNoteSystem";
 import prepareScale from "@utils/prepareScale";
+import prepareTriad from "@utils/prepareTriad";
 import { stave__wrapper } from "@styles/Content.module.css";
 import useScaleInfo from "@utils/useScaleInfo";
 import useNotePositions from "@utils/useNotePositions";
@@ -13,13 +15,14 @@ const Content = () => {
 	const { mode, selectedScale } = router.query;
 
 	const { scaleInfo, isLoading: isScaleInfoLoading, isError: isScaleInfoError } = useScaleInfo();
-	const { notePositions, isLoading: isNotePositionsLoading, isError: isNotePositionsError } = useNotePositions();
-  
+	const {
+		notePositions,
+		isLoading: isNotePositionsLoading,
+		isError: isNotePositionsError,
+	} = useNotePositions();
+
 	if (isScaleInfoError || isNotePositionsError) return <div>failed to load</div>;
 	if (isScaleInfoLoading || isNotePositionsLoading) return <div>loading...</div>;
-  
-	console.log("scaleInfo: ", scaleInfo);
-	console.log("notePositions: ", notePositions);
 
 	let parsedScale;
 	try {
@@ -41,9 +44,12 @@ const Content = () => {
 		"church-mode"
 	].slice(1)}`;
 
-	const scaleInclOctaveDeclarations = prepareScale(parsedScale);
+	const triads = notePositions.map((positions) =>
+		positions.map((position) => parsedScale[position])
+	);
 
-	// console.log("scaleInclOctaveDeclarations: ", scaleInclOctaveDeclarations);
+	const scaleInclOctaveDeclarations = prepareScale(parsedScale);
+	const triadsInclOctaveDeclarations = prepareTriad(triads);
 
 	return (
 		<>
@@ -52,6 +58,16 @@ const Content = () => {
 				<ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
 				<p>
 					{tonic} {mode} scale / {noteSystemCaption} mode
+				</p>
+			</div>
+			<div className={stave__wrapper}>
+				<TriadNoteSystem
+					triadsInclOctaveDeclarations={triadsInclOctaveDeclarations}
+					mode={mode}
+					parsedScale={parsedScale}
+				/>
+				<p>
+					{tonic} {mode} triad | root position, 1rst & 2nd inversion
 				</p>
 			</div>
 		</>
