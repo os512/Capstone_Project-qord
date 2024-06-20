@@ -44,7 +44,7 @@ const Content = () => {
 			<div className={stave__wrapper}>
 				<ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
 				<p>
-					{tonic} {mode} Scale / {noteSystemCaption} mode
+					{tonic} {mode} scale / {noteSystemCaption} mode
 				</p>
 			</div>
 		</>
