@@ -5,7 +5,7 @@ import ScaleNoteSystem from "@components/Vexflow/ScaleNoteSystem";
 import TriadNoteSystem from "@components/Vexflow/TriadNoteSystem";
 import prepareScale from "@utils/prepareScale";
 import prepareTriad from "@utils/prepareTriad";
-import { stave__wrapper } from "@styles/Content.module.css";
+import { stave__container, stave__wrapper } from "@styles/Content.module.css";
 import useScaleInfo from "@utils/useScaleInfo";
 import useNotePositions from "@utils/useNotePositions";
 
@@ -54,21 +54,23 @@ const Content = () => {
 	return (
 		<>
 			<ContentPage tonic={tonic} mode={mode} scaleInfo={scaleDetails} session={session} />
-			<div className={stave__wrapper}>
-				<ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
-				<p>
-					{tonic} {mode} scale / {noteSystemCaption} mode
-				</p>
-			</div>
-			<div className={stave__wrapper}>
-				<TriadNoteSystem
-					triadsInclOctaveDeclarations={triadsInclOctaveDeclarations}
-					mode={mode}
-					parsedScale={parsedScale}
-				/>
-				<p>
-					{tonic} {mode} triad | root position, 1rst & 2nd inversion
-				</p>
+			<div className={stave__container}>
+				<div className={stave__wrapper}>
+					<ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
+					<p>
+						{tonic} {mode} scale / {noteSystemCaption} mode
+					</p>
+				</div>
+				<div className={stave__wrapper}>
+					<TriadNoteSystem
+						triadsInclOctaveDeclarations={triadsInclOctaveDeclarations}
+						mode={mode}
+						parsedScale={parsedScale}
+					/>
+					<p>
+						{tonic} {mode} triad | root position, 1rst & 2nd inversion
+					</p>
+				</div>
 			</div>
 		</>
 	);

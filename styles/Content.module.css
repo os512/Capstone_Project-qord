@@ -14,7 +14,14 @@
 	font-weight: 400;
 	font-size: 1.5rem;
 	line-height: 1.5;
-	width: 70ch;
+	width: 60%;
+}
+
+.stave__container {
+	display: flex;
+	justify-content: center;
+	column-gap: 2rem;
+	flex-wrap: wrap;
 }
 
 .stave__wrapper {
@@ -22,6 +29,6 @@
 		margin-inline-start: 0.6rem;
 		font-family: var(--ff-regular);
 		font-weight: 600;
-		font-size: 1.2rem;
+		font-size: 1rem;
 	}
 }
