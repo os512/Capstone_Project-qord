@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import Vex from "vexflow";
 
-const ScaleNoteSystem = ({ scalesInclOctaveDeclarations }) => {
+const ScaleNoteSystem = ({ scaleInclOctaveDeclarations }) => {
 	const containerRef = useRef(null);
 
 	useEffect(() => {
@@ -22,9 +22,9 @@ const ScaleNoteSystem = ({ scalesInclOctaveDeclarations }) => {
 			 ***** NOTES GENERATION *****
 			 ****************************/
 
-			// Map `scalesInclOctaveDeclarations` array to `StaveNote` object
+			// Map `scaleInclOctaveDeclarations` array to `StaveNote` object
 			// Add `Accidental` modifier if a note has a length of 4 characters
-			const notes = scalesInclOctaveDeclarations.map((note) => {
+			const notes = scaleInclOctaveDeclarations.map((note) => {
 				if (note.length === 4) {
 					return new StaveNote({
 						keys: [`${note}`],
@@ -73,7 +73,7 @@ const ScaleNoteSystem = ({ scalesInclOctaveDeclarations }) => {
 				}
 			};
 		}
-	}, [scalesInclOctaveDeclarations]);
+	}, [scaleInclOctaveDeclarations]);
 
 	return <div ref={containerRef}></div>;
 };

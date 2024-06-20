@@ -45,19 +45,19 @@ const Content = () => {
 	 *** PREPARATION OF SCALES FOR THE NOTE SYSTEM ***
 	 *************************************************/
 
-	const NoteSystemUpdater = (currentSelectedScaleArr) => {
+	const ScalePreparator = (currentSelectedScaleArr) => {
 		// Initialize array to store scales including octave declarations
-		const scalesInclOctaveDeclarations = [];
+		const scaleInclOctaveDeclarations = [];
 		let octave;
 
 		// Clear the existing scale before a new one is going to be displayed
-		scalesInclOctaveDeclarations.length = 0;
+		scaleInclOctaveDeclarations.length = 0;
 
 		function addOctaveToNotes() {
 			octave = 4;
 			currentSelectedScaleArr.forEach((note) => {
 				note += `/${octave}`; // e.g. "C/4"
-				scalesInclOctaveDeclarations.push(note);
+				scaleInclOctaveDeclarations.push(note);
 			});
 		}
 
@@ -68,18 +68,17 @@ const Content = () => {
 				currentSelectedScaleArr.indexOf("C#") === 0:
 				addOctaveToNotes();
 				// Add repeated root note and its octave definition on top of scale
-				scalesInclOctaveDeclarations[7] =
-					scalesInclOctaveDeclarations[0].slice(0, -2) + `/${octave + 1}`;
+				scaleInclOctaveDeclarations[7] =
+					scaleInclOctaveDeclarations[0].slice(0, -2) + `/${octave + 1}`;
 				break;
 
 			case currentSelectedScaleArr.indexOf("B") === 0:
 				addOctaveToNotes();
 				// Compensate octave definition for consistent representation in note system
-				scalesInclOctaveDeclarations[0] =
-					scalesInclOctaveDeclarations[0].slice(0, -2) + `/${octave - 1}`;
+				scaleInclOctaveDeclarations[0] =
+					scaleInclOctaveDeclarations[0].slice(0, -2) + `/${octave - 1}`;
 				// Add repeated root note and its octave definition on top of scale
-				scalesInclOctaveDeclarations[7] =
-					scalesInclOctaveDeclarations[0].slice(0, -2) + `/${octave}`;
+				scaleInclOctaveDeclarations[7] = scaleInclOctaveDeclarations[0].slice(0, -2) + `/${octave}`;
 				break;
 			case currentSelectedScaleArr.indexOf("B") !== 0:
 				// Compensate octave definition for consistent representation in note system
@@ -89,23 +88,22 @@ const Content = () => {
 							? 4
 							: 5;
 					note += `/${octave}`;
-					scalesInclOctaveDeclarations.push(note);
+					scaleInclOctaveDeclarations.push(note);
 				});
 				// Add repeated root note and its octave definition on top of scale
-				scalesInclOctaveDeclarations[7] =
-					scalesInclOctaveDeclarations[0].slice(0, -2) + `/${octave}`;
+				scaleInclOctaveDeclarations[7] = scaleInclOctaveDeclarations[0].slice(0, -2) + `/${octave}`;
 				break;
 			default:
 				console.error("For this scale an octave declaration hasn't been defined, yet!");
 		}
-		return scalesInclOctaveDeclarations;
+		return scaleInclOctaveDeclarations;
 	};
-	const scalesInclOctaveDeclarations = NoteSystemUpdater(parsedScale);
+	const scaleInclOctaveDeclarations = ScalePreparator(parsedScale);
 
 	return (
 		<>
 			<ContentPage tonic={tonic} mode={mode} scaleInfo={scaleInfo} session={session} />
-			<ScaleNoteSystem scalesInclOctaveDeclarations={scalesInclOctaveDeclarations} />
+			<ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
 			<p>
 				{tonic} {mode} Scale / {noteSystemCaption} mode
 			</p>
