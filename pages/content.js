@@ -4,6 +4,7 @@ import ContentPage from "@components/ContentPage/ContentPage";
 import ScaleNoteSystem from "@components/Vexflow/ScaleNoteSystem";
 import useFetchData from "@utils/useFetchData";
 import prepareScale from "@utils/prepareScale";
+import { stave__wrapper} from "@styles/Content.module.css"
 
 const Content = () => {
 	const { data: session } = useSession();
@@ -40,10 +41,12 @@ const Content = () => {
 	return (
 		<>
 			<ContentPage tonic={tonic} mode={mode} scaleInfo={scaleDetails} session={session} />
-			<ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
-			<p>
-				{tonic} {mode} Scale / {noteSystemCaption} mode
-			</p>
+			<div className={stave__wrapper}>
+				<ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
+				<p>
+					{tonic} {mode} Scale / {noteSystemCaption} mode
+				</p>
+			</div>
 		</>
 	);
 };
