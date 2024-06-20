@@ -2,19 +2,26 @@ import { useRouter } from "next/router";
 import { signOut, signIn, useSession } from "next-auth/react";
 import ContentPage from "@components/ContentPage/ContentPage";
 import ScaleNoteSystem from "@components/Vexflow/ScaleNoteSystem";
-import useFetchScaleInfo from "@utils/useFetchScaleInfo";
+import useFetchData from "@utils/useFetchData";
 import prepareScale from "@utils/prepareScale";
 
 const Content = () => {
 	const { data: session } = useSession();
 	const router = useRouter();
 	const { mode, selectedScale } = router.query;
-	const parsedScale = typeof selectedScale === "string" ? JSON.parse(selectedScale) : selectedScale;
 
-	const { scaleInfo, isLoading, isError } = useFetchScaleInfo();
+	const { scaleInfo, isLoading, isError } = useFetchData("/scales-info.json");
 
 	if (isError) return <div>failed to load</div>;
 	if (isLoading) return <div>loading...</div>;
+
+	let parsedScale;
+	try {
+		parsedScale = typeof selectedScale === "string" ? JSON.parse(selectedScale) : selectedScale;
+	} catch (error) {
+		router.push("/getting-started");
+		return;
+	}
 
 	if (!mode || !selectedScale) {
 		router.push("/getting-started");
