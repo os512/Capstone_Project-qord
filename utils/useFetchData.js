@@ -1,3 +1,5 @@
+// TODO OS: This custom hook is used only once (by `/pages/content.js`). Refactor all the other places in this project by reusing this hook, where data is fetched.
+
 import useSWR from "swr";
 
 const fetcher = async (url) => {
@@ -12,8 +14,8 @@ const fetcher = async (url) => {
 	return res.json();
 };
 
-const useFetchScaleInfo = () => {
-	const { data, error, isLoading } = useSWR("/scales-info.json", fetcher);
+const useFetchData = (resource) => {
+	const { data, error, isLoading } = useSWR(resource, fetcher);
 
 	return {
 		scaleInfo: data,
@@ -22,4 +24,4 @@ const useFetchScaleInfo = () => {
 	};
 };
 
-export default useFetchScaleInfo;
+export default useFetchData;
