@@ -1,42 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from "react";
+import useTrackInfosFromDB from "@utils/useTrackInfosFromDB";
 
 export default function Content() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasData, setHasData] = useState(false);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchTrack() {
-      try {
-        const res = await fetch('/api/spotify/track?mode=Minor&key=F');
-        if (res.ok) {
-          const data = await res.json();
+	const {
+		trackInfosFromDB,
+		isLoading: isTrackInfosFromDBLoading,
+		isError: isTrackInfosFromDBError,
+	} = useTrackInfosFromDB("Minor", encodeURIComponent("F#"));
 
-		  console.log("data: ", data);
-          setHasData(true);
-        } else {
-          setError('Failed to fetch track');
-        }
-      } catch (err) {
-        setError('An error occurred while fetching the track');
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  console.log("trackInfosFromDB: ", trackInfosFromDB);
 
-    fetchTrack();
-  }, []);
+	// Redirect to getting-started page if there are errors
+	useEffect(() => {
+		if (isTrackInfosFromDBError) {
+			// router.push("/getting-started");
+      return <div>Seems there is no track found</div>;
+		}
+	}, [isTrackInfosFromDBError]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+	if (isTrackInfosFromDBLoading) {
+		return <div>Loading...</div>;
+	}
 
-  return (
-    <div>
-      {hasData ? (
-        <p>Successfully fetched track data!</p>
-      ) : (
-        <p>No track data found.</p>
-      )}
-    </div>
-  );
+  const { artist_name, track_name, mode, key } = trackInfosFromDB;
+	return (
+		<div>
+			{<p>Artist: {artist_name}</p>}
+			{<p>Track: {track_name}</p>}
+			{<p>Key: {`${key} ${mode}`}</p>}
+		</div>
+	);
 }
