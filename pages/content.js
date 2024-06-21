@@ -30,10 +30,9 @@ const Content = () => {
 				typeof selectedScale === "string" ? JSON.parse(selectedScale) : selectedScale;
 			return { parsedScale, tonic: parsedScale[0] };
 		} catch (error) {
-			router.push("/getting-started");
 			return { parsedScale: null, tonic: null };
 		}
-	}, [selectedScale, router]);
+	}, [selectedScale]);
 
 	const capitalizedMode = mode ? mode.charAt(0).toUpperCase() + mode.slice(1) : "";
 
