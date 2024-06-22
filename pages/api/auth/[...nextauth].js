@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import { ObjectId } from 'mongodb';
 import clientPromise from "@lib/db/mongodb";
 
 export const authOptions = {
@@ -25,18 +26,31 @@ export const authOptions = {
   },
   callbacks: {
     async session({ session, user }) {
-      // Fetch the user's account from the database
-      const client = await clientPromise;
-      const db = client.db();
-      const userAccount = await db.collection("accounts").findOne({ userId: user.id });
+      try {
+        console.log("UUUUUUUUUUUUUUUSSSSERRRRR: ", user);
+        console.log("User ID being queried:", user.id);
+        const client = await clientPromise;
+        const db = client.db();
+        const userAccount = await db.collection("accounts").findOne({ userId: new ObjectId(user.id.toString()) });
+        
+        try {
+          if (userAccount) {
+            console.log("Uuuuuser Accccccccccount: ", userAccount);
+            session.accessToken = userAccount.access_token;
+            session.refreshToken = userAccount.refresh_token;
+            session.accessTokenExpires = userAccount.expires_at * 1000;
+          } else {
+            console.log("No user account found for ID:", user.id);
+          }
+        } catch (error) {
+          console.error("Error fetching user account:", error);
+        }
 
-      if (userAccount) {
-        session.accessToken = userAccount.access_token;
-        session.refreshToken = userAccount.refresh_token;
-        session.accessTokenExpires = userAccount.expires_at * 1000;
+        session.user.id = user.id;
+      } catch (error) {
+        console.error("Failed to update session:", error);
+        // Optionally, handle the error more gracefully, e.g., by setting an error state in the session
       }
-
-      session.user.id = user.id;
       return session;
     },
   },
