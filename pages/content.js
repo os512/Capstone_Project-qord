@@ -68,23 +68,38 @@ const Content = () => {
   }, [mode, parsedScale, tonic, router]);
 
   // Play the track when the player is ready and we have track info
-useEffect(() => {
-  if (isReady && player && trackInfosFromDB && session?.accessToken) {
-    player.getCurrentState().then(state => {
-      if (!state) {
-        player.connect().then(success => {
-          if (success) {
-            console.log("typeof spotify:track:${trackInfosFromDB.track_id}: ", typeof `spotify:track:${trackInfosFromDB.track_id}`); // string
-            console.log("spotify:track:${trackInfosFromDB.track_id}: ", `spotify:track:${trackInfosFromDB.track_id}`); // spotify:track:5DiXcVovI0FcY2s0icWWUu
-            play(); // Call the play function from the hook
-          } else {
-            console.error("Failed to connect player");
-          }
-        });
-      }
-    });
-  }
-}, [isReady, player, trackInfosFromDB, session, play]);
+  useEffect(() => {
+    if (isReady && player && trackInfosFromDB && session?.accessToken) {
+      // Add a small delay to ensure the player is fully initialized
+      setTimeout(() => {
+        if (player.getCurrentState) {
+          player.getCurrentState()
+            .then(state => {
+              if (!state || state.paused) {
+                console.log("No current state or player is paused. Attempting to connect and play.");
+                return player.connect();
+              }
+              return Promise.resolve(true);
+            })
+            .then(success => {
+              if (success) {
+                console.log("Player connected. Attempting to play track.");
+                play(trackInfosFromDB.track_id);
+              } else {
+                console.error("Failed to connect player");
+              }
+            })
+            .catch(error => {
+              console.error("Error getting player state or connecting:", error);
+            });
+        } else {
+          console.error("getCurrentState is not available on the player object");
+        }
+      }, 1000); // 1 second delay
+    }
+  }, [isReady, player, trackInfosFromDB, session, play]);
+  
+  
 
 
   if (isScaleInfoLoading || isNotePositionsLoading || isTrackInfosFromDBLoading) {
