@@ -95,37 +95,33 @@ const useSpotifyPlayer = () => {
 		[deviceId, accessToken]
 	);
 
-	const pause = useCallback(() => {
+	const pause = useCallback(async () => {
 		if (player) {
-			player.pause().then(() => {
-				console.log("Paused!");
-				setIsPaused(true);
-			});
+			await player.pause();
+			console.log("Paused!");
+			setIsPaused(true);
 		}
 	}, [player]);
 
-	const resume = useCallback(() => {
+	const resume = useCallback(async () => {
 		if (player) {
-			player.resume().then(() => {
-				console.log("Resumed!");
-				setIsPaused(false);
-			});
+			await player.resume();
+			console.log("Resumed!");
+			setIsPaused(false);
 		}
 	}, [player]);
 
-	const next = useCallback(() => {
+	const next = useCallback(async () => {
 		if (player) {
-			player.nextTrack().then(() => {
-				console.log("Skipped to next track!");
-			});
+			await player.nextTrack();
+			console.log("Skipped to next track!");
 		}
 	}, [player]);
 
-	const previous = useCallback(() => {
+	const previous = useCallback(async () => {
 		if (player) {
-			player.previousTrack().then(() => {
-				console.log("Skipped to previous track!");
-			});
+			await player.previousTrack();
+			console.log("Skipped to previous track!");
 		}
 	}, [player]);
 
