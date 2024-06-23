@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import useSpotifyPlayer from "@utils/useSpotifyPlayer";
+import { FiPlay, FiPause, FiSkipForward, FiSkipBack } from "react-icons/fi";
+import {
+	spotify__container,
+	playbackControls,
+	current__trackinfo,
+	spotify__playerhandles,
+} from "./SpotifyPlayer.module.css";
 
 const SpotifyPlayer = ({ trackInfosFromDB, session }) => {
 	const { player, isPaused, currentTrack, isReady, play, pause, resume, next, previous } =
@@ -21,8 +28,8 @@ const SpotifyPlayer = ({ trackInfosFromDB, session }) => {
 	};
 
 	return (
-		<div>
-			<h2>Spotify Player</h2>
+		<div className={spotify__container}>
+			{/* <h2>Spotify Player</h2> */}
 			{isReady ? (
 				currentTrack ? (
 					<div>
@@ -33,13 +40,18 @@ const SpotifyPlayer = ({ trackInfosFromDB, session }) => {
 							height={100}
 							loading="eager"
 						/>
-						<p>
-							Now Playing: {currentTrack.name} by{" "}
-							{currentTrack.artists.map((artist) => artist.name).join(", ")}
+						<p className={current__trackinfo}>
+							{currentTrack.name} by {currentTrack.artists.map((artist) => artist.name).join(", ")}
 						</p>
-						<button onClick={handlePlayPause}>{isPaused ? "Play" : "Pause"}</button>
-						<button onClick={previous}>Previous</button>
-						<button onClick={next}>Next</button>
+						<div className={`${playbackControls} ${spotify__playerhandles}`}>
+							<FiSkipBack onClick={previous}>Previous</FiSkipBack>
+							{isPaused ? (
+								<FiPlay onClick={handlePlayPause} />
+							) : (
+								<FiPause onClick={handlePlayPause} />
+							)}
+							<FiSkipForward onClick={next}>Next</FiSkipForward>
+						</div>
 					</div>
 				) : (
 					<p>No track currently playing</p>

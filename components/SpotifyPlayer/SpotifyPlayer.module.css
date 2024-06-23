@@ -1,0 +1,43 @@
+.spotify__container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	margin-block: 3rem 1rem;
+}
+
+.playbackControls {
+	display: flex;
+	justify-content: center;
+	column-gap: 1.8rem;
+	opacity: 0;
+	scale: 0.5;
+	transition: var(--transition-base);
+
+	&:hover {
+		opacity: 1;
+		scale: 1;
+	}
+
+	& > * {
+		font-size: 30px;
+		fill: white;
+		stroke: white;
+		transition: var(--transition-base);
+		cursor: pointer;
+
+		&:hover {
+			opacity: 0.75;
+			scale: 1.1;
+		}
+	}
+}
+
+.current__trackinfo {
+	margin-block: 1rem;
+}
+
+.spotify__playerhandles svg {
+	fill: var(--neutral-color-700);
+	stroke: var(--neutral-color-700);
+}

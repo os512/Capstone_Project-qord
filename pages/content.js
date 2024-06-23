@@ -79,6 +79,7 @@ const Content = () => {
 
   return (
     <>
+      <SpotifyPlayer trackInfosFromDB={trackInfosFromDB} session={session} />
       <ContentPage tonic={tonic} mode={mode} scaleInfo={scaleDetails} session={session} />
       <div className={stave__container}>
         <div className={stave__wrapper}>
@@ -98,7 +99,6 @@ const Content = () => {
           </p>
         </div>
       </div>
-      <SpotifyPlayer trackInfosFromDB={trackInfosFromDB} session={session} />
     </>
   );
 };
