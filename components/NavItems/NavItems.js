@@ -18,7 +18,7 @@ const NavItems = () => {
 						className={nav__link}
 						href={""}
 						onClick={(event) => {
-							event.preventDefault(); // TODO OS: Why does browser still reload?
+							event.preventDefault();
 							return signOut();
 						}}
 					>
