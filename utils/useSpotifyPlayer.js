@@ -61,31 +61,35 @@ const useSpotifyPlayer = () => {
 				player.disconnect();
 			}
 		};
-	}, [accessToken]);
+	}, [accessToken]); // Do not use `player` here, even if VSCode complains about it: This causes feedback loops that lead to Spotify's request limits being exceeded!
 
 	const play = useCallback(
-		(trackId) => {
+		async (trackId) => {
 			if (deviceId && accessToken) {
-				fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-					method: "PUT",
-					body: JSON.stringify({ uris: [`spotify:track:${trackId}`] }),
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${accessToken}`,
-					},
-				})
-					.then((response) => {
-						if (response.ok) {
-							console.log("Playback started");
-							setIsPaused(false);
-						} else {
-							return response.json().then((data) => {
-								console.error("Error starting playback:", data);
-								throw new Error(data.error.message);
-							});
+				try {
+					const response = await fetch(
+						`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+						{
+							method: "PUT",
+							body: JSON.stringify({ uris: [`spotify:track:${trackId}`] }),
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: `Bearer ${accessToken}`,
+							},
 						}
-					})
-					.catch((error) => console.error("Error starting playback:", error));
+					);
+
+					if (response.ok) {
+						console.log("Playback started");
+						setIsPaused(false);
+					} else {
+						const data = await response.json();
+						console.error("Error starting playback:", data);
+						throw new Error(data.error.message);
+					}
+				} catch (error) {
+					console.error("Error starting playback:", error);
+				}
 			}
 		},
 		[deviceId, accessToken]
