@@ -10,7 +10,7 @@
 	display: flex;
 	justify-content: center;
 	column-gap: 1.8rem;
-	opacity: 0;
+	opacity: 0.1;
 	scale: 0.5;
 	transition: var(--transition-base);
 
