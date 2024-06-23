@@ -2,6 +2,7 @@
 import { useMemo, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import ContentPage from "@components/ContentPage/ContentPage";
 import ScaleNoteSystem from "@components/Vexflow/ScaleNoteSystem";
 import TriadNoteSystem from "@components/Vexflow/TriadNoteSystem";
@@ -14,129 +15,136 @@ import useSpotifyPlayer from "@utils/useSpotifyPlayer";
 import { stave__container, stave__wrapper } from "@styles/Content.module.css";
 
 const Content = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
-  const { mode, selectedScale } = router.query;
+	const { data: session } = useSession();
+	const router = useRouter();
+	const { mode, selectedScale } = router.query;
 
-  const { parsedScale, tonic } = useMemo(() => {
-    if (!selectedScale) return { parsedScale: null, tonic: null };
-    try {
-      const parsedScale =
-        typeof selectedScale === "string" ? JSON.parse(selectedScale) : selectedScale;
-      return { parsedScale, tonic: parsedScale[0] };
-    } catch (error) {
-      return { parsedScale: null, tonic: null };
-    }
-  }, [selectedScale]);
+	const { parsedScale, tonic } = useMemo(() => {
+		if (!selectedScale) return { parsedScale: null, tonic: null };
+		try {
+			const parsedScale =
+				typeof selectedScale === "string" ? JSON.parse(selectedScale) : selectedScale;
+			return { parsedScale, tonic: parsedScale[0] };
+		} catch (error) {
+			return { parsedScale: null, tonic: null };
+		}
+	}, [selectedScale]);
 
-  const capitalizedMode = mode ? mode.charAt(0).toUpperCase() + mode.slice(1) : "";
+	const capitalizedMode = mode ? mode.charAt(0).toUpperCase() + mode.slice(1) : "";
 
-  const { scaleInfo, isLoading: isScaleInfoLoading, isError: isScaleInfoError } = useScaleInfo();
-  const {
-    notePositions,
-    isLoading: isNotePositionsLoading,
-    isError: isNotePositionsError,
-  } = useNotePositions();
-  const {
-    trackInfosFromDB,
-    isLoading: isTrackInfosFromDBLoading,
-    isError: isTrackInfosFromDBError,
-  } = useTrackInfosFromDB(capitalizedMode, tonic ? encodeURIComponent(tonic) : "");
+	const { scaleInfo, isLoading: isScaleInfoLoading, isError: isScaleInfoError } = useScaleInfo();
+	const {
+		notePositions,
+		isLoading: isNotePositionsLoading,
+		isError: isNotePositionsError,
+	} = useNotePositions();
+	const {
+		trackInfosFromDB,
+		isLoading: isTrackInfosFromDBLoading,
+		isError: isTrackInfosFromDBError,
+	} = useTrackInfosFromDB(capitalizedMode, tonic ? encodeURIComponent(tonic) : "");
 
-  const { player, isPaused, currentTrack, isReady, play, pause, resume, next, previous } =
-    useSpotifyPlayer();
+	const { player, isPaused, currentTrack, isReady, play, pause, resume, next, previous } =
+		useSpotifyPlayer();
 
-  useEffect(() => {
-    if (isScaleInfoError || isNotePositionsError || isTrackInfosFromDBError) {
-      router.push("/getting-started");
-    }
-  }, [isScaleInfoError, isNotePositionsError, isTrackInfosFromDBError, router]);
+	useEffect(() => {
+		if (isScaleInfoError || isNotePositionsError || isTrackInfosFromDBError) {
+			router.push("/getting-started");
+		}
+	}, [isScaleInfoError, isNotePositionsError, isTrackInfosFromDBError, router]);
 
-  useEffect(() => {
-    if (!mode || !parsedScale || !tonic) {
-      router.push("/getting-started");
-    }
-  }, [mode, parsedScale, tonic, router]);
+	useEffect(() => {
+		if (!mode || !parsedScale || !tonic) {
+			router.push("/getting-started");
+		}
+	}, [mode, parsedScale, tonic, router]);
 
-  useEffect(() => {
-    if (isReady && player && trackInfosFromDB && session?.accessToken) {
-      play(trackInfosFromDB.track_id);
-    }
-  }, [isReady, player, trackInfosFromDB, session, play]);
+	useEffect(() => {
+		if (isReady && player && trackInfosFromDB && session?.accessToken) {
+			play(trackInfosFromDB.track_id);
+		}
+	}, [isReady, player, trackInfosFromDB, session, play]);
 
-  const handlePlayPause = () => {
-    if (isPaused) {
-      resume();
-    } else {
-      pause();
-    }
-  };
+	const handlePlayPause = () => {
+		if (isPaused) {
+			resume();
+		} else {
+			pause();
+		}
+	};
 
-  if (isScaleInfoLoading || isNotePositionsLoading || isTrackInfosFromDBLoading) {
-    return <div>Loading...</div>;
-  }
+	if (isScaleInfoLoading || isNotePositionsLoading || isTrackInfosFromDBLoading) {
+		return <div>Loading...</div>;
+	}
 
-  if (!scaleInfo || !notePositions || !trackInfosFromDB) {
-    return <div>Data not available</div>;
-  }
+	if (!scaleInfo || !notePositions || !trackInfosFromDB) {
+		return <div>Data not available</div>;
+	}
 
-  const scaleDetails = scaleInfo[mode]?.find((info) => info.mode === mode && info.tonic === tonic);
-  if (!scaleDetails) {
-    return <div>Scale details not found</div>;
-  }
+	const scaleDetails = scaleInfo[mode]?.find((info) => info.mode === mode && info.tonic === tonic);
+	if (!scaleDetails) {
+		return <div>Scale details not found</div>;
+	}
 
-  const noteSystemCaption = `${scaleDetails["church-mode"][0].toUpperCase()}${scaleDetails[
-    "church-mode"
-  ].slice(1)}`;
-  const triads = notePositions.map((positions) =>
-    positions.map((position) => parsedScale[position])
-  );
-  const scaleInclOctaveDeclarations = prepareScale(parsedScale);
-  const triadsInclOctaveDeclarations = prepareTriad(triads);
+	const noteSystemCaption = `${scaleDetails["church-mode"][0].toUpperCase()}${scaleDetails[
+		"church-mode"
+	].slice(1)}`;
+	const triads = notePositions.map((positions) =>
+		positions.map((position) => parsedScale[position])
+	);
+	const scaleInclOctaveDeclarations = prepareScale(parsedScale);
+	const triadsInclOctaveDeclarations = prepareTriad(triads);
 
-  return (
-    <>
-      <ContentPage tonic={tonic} mode={mode} scaleInfo={scaleDetails} session={session} />
-      <div className={stave__container}>
-        <div className={stave__wrapper}>
-          <ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
-          <p>
-            {tonic} {mode} scale / {noteSystemCaption} mode
-          </p>
-        </div>
-        <div className={stave__wrapper}>
-          <TriadNoteSystem
-            triadsInclOctaveDeclarations={triadsInclOctaveDeclarations}
-            mode={mode}
-            parsedScale={parsedScale}
-          />
-          <p>
-            {tonic} {mode} triad | root position, 1st & 2nd inversion
-          </p>
-        </div>
-      </div>
-      <div>
-        <h2>Spotify Player</h2>
-        {isReady ? (
-          currentTrack ? (
-            <div>
-              <p>
-                Now Playing: {currentTrack.name} by{" "}
-                {currentTrack.artists.map((artist) => artist.name).join(", ")}
-              </p>
-              <button onClick={handlePlayPause}>{isPaused ? "Play" : "Pause"}</button>
-              <button onClick={previous}>Previous</button>
-              <button onClick={next}>Next</button>
-            </div>
-          ) : (
-            <p>No track currently playing</p>
-          )
-        ) : (
-          <p>Spotify player is initializing...</p>
-        )}
-      </div>
-    </>
-  );
+	return (
+		<>
+			<ContentPage tonic={tonic} mode={mode} scaleInfo={scaleDetails} session={session} />
+			<div className={stave__container}>
+				<div className={stave__wrapper}>
+					<ScaleNoteSystem scaleInclOctaveDeclarations={scaleInclOctaveDeclarations} />
+					<p>
+						{tonic} {mode} scale / {noteSystemCaption} mode
+					</p>
+				</div>
+				<div className={stave__wrapper}>
+					<TriadNoteSystem
+						triadsInclOctaveDeclarations={triadsInclOctaveDeclarations}
+						mode={mode}
+						parsedScale={parsedScale}
+					/>
+					<p>
+						{tonic} {mode} triad | root position, 1st & 2nd inversion
+					</p>
+				</div>
+			</div>
+			<div>
+				<h2>Spotify Player</h2>
+				{isReady ? (
+					currentTrack ? (
+						<div>
+							<Image
+								src={currentTrack.album.images[0].url}
+								alt="album cover"
+								width={100}
+								height={100}
+								loading="eager"
+							/>
+							<p>
+								Now Playing: {currentTrack.name} by{" "}
+								{currentTrack.artists.map((artist) => artist.name).join(", ")}
+							</p>
+							<button onClick={handlePlayPause}>{isPaused ? "Play" : "Pause"}</button>
+							<button onClick={previous}>Previous</button>
+							<button onClick={next}>Next</button>
+						</div>
+					) : (
+						<p>No track currently playing</p>
+					)
+				) : (
+					<p>Spotify player is initializing...</p>
+				)}
+			</div>
+		</>
+	);
 };
 
 export default Content;
