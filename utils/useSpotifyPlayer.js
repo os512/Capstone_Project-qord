@@ -81,14 +81,8 @@ const useSpotifyPlayer = () => {
 
 					if (response.ok) {
 						console.log("Playback started");
-						setTimeout(() => {
-							player.setVolume(0.5).then(() => {
-								console.log("Volume set to 0.5");
-							});
-						}, 3500);
 						await player.connect();
-						
-						console.log("player connected");
+						await player.setVolume(0.5);
 						await player.pause();
 						setIsPaused(true);
 					} else {
