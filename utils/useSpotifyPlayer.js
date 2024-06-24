@@ -27,7 +27,7 @@ const useSpotifyPlayer = () => {
 				getOAuthToken: (cb) => {
 					cb(accessToken);
 				},
-				volume: 0.5,
+				volume: 0,
 			});
 
 			setPlayer(newPlayer);
@@ -81,9 +81,15 @@ const useSpotifyPlayer = () => {
 
 					if (response.ok) {
 						console.log("Playback started");
+						setTimeout(() => {
+							player.setVolume(0.5).then(() => {
+								console.log("Volume set to 0.5");
+							});
+						}, 3500);
 						await player.connect();
+						
+						console.log("player connected");
 						await player.pause();
-						// console.log("playerstate: ", await player.getCurrentState());
 						setIsPaused(true);
 					} else {
 						const data = await response.json();
