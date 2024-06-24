@@ -52,7 +52,6 @@ const useSpotifyPlayer = () => {
 				setIsPaused(state.paused);
 				setCurrentTrack(state.track_window.current_track);
 			});
-
 			newPlayer.connect();
 		};
 
@@ -116,6 +115,7 @@ const useSpotifyPlayer = () => {
 
 	const next = useCallback(async () => {
 		if (player) {
+			await player.connect();
 			await player.nextTrack();
 			console.log("Skipped to next track!");
 		}
@@ -123,6 +123,7 @@ const useSpotifyPlayer = () => {
 
 	const previous = useCallback(async () => {
 		if (player) {
+			await player.connect();
 			await player.previousTrack();
 			console.log("Skipped to previous track!");
 		}
