@@ -1,0 +1,6 @@
+.navBar__container {
+	display: flex;
+	width: 100%;
+	padding-inline: var(--padding-inline-container);
+	align-items: center;
+}

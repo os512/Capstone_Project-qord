@@ -1,0 +1,32 @@
+.btn {
+	margin-block-start: 1.5rem;
+	font-size: 1rem;
+
+	&:hover {
+		box-shadow: var(--shadow-base);
+	}
+}
+
+.btn_login {
+	background-color: var(--secondary-color);
+	color: #fff;
+
+	&:hover {
+		background-color: transparent;
+		outline: 1px solid var(--secondary-color);
+		font-weight: 900;
+		color: var(--primary-color);
+	}
+}
+
+.btn_logout {
+	background-color: var(--primary-color);
+	color: #fff;
+
+	&:hover {
+		background-color: transparent;
+		outline: 1px solid var(--primary-color);
+		font-weight: 900;
+		color: var(--secondary-color);
+	}
+}
