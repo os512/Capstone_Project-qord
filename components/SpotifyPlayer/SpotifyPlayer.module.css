@@ -33,6 +33,17 @@
 	}
 }
 
+.track__image{
+	box-shadow: var(--shadow-base);
+	border-radius: .5rem;
+	padding: .25rem;
+	transition: var(--transition-base);
+
+	&:hover {
+		scale: 1.1;
+	}
+}
+
 .current__trackinfo {
 	margin-block: 1rem;
 }

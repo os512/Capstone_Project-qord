@@ -4,6 +4,7 @@ import useSpotifyPlayer from "@utils/useSpotifyPlayer";
 import { FiPlay, FiPause, FiSkipForward, FiSkipBack } from "react-icons/fi";
 import {
 	spotify__container,
+	track__image,
 	playbackControls,
 	current__trackinfo,
 	spotify__playerhandles,
@@ -34,6 +35,7 @@ const SpotifyPlayer = ({ trackInfosFromDB, session }) => {
 				currentTrack ? (
 					<div>
 						<Image
+						className={track__image}
 							src={currentTrack.album.images[0].url}
 							alt="album cover"
 							width={100}
