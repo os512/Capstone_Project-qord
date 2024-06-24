@@ -94,7 +94,7 @@ const useSpotifyPlayer = () => {
 				}
 			}
 		},
-		[deviceId, accessToken]
+		[deviceId, accessToken, player]
 	);
 
 	const pause = useCallback(async () => {
