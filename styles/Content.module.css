@@ -1,0 +1,34 @@
+.maintitle {
+	font-family: var(--mPlusRounded1c);
+	font-size: 4rem;
+
+	background-image: var(--gradient-base);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.description {
+	margin-block-start: 2rem;
+	font-family: var(--ff-regular);
+	font-weight: 400;
+	font-size: 1.5rem;
+	line-height: 1.5;
+	width: 60%;
+}
+
+.stave__container {
+	display: flex;
+	justify-content: center;
+	column-gap: 2rem;
+	flex-wrap: wrap;
+}
+
+.stave__wrapper {
+	& > p {
+		margin-inline-start: 0.6rem;
+		font-family: var(--ff-regular);
+		font-weight: 600;
+		font-size: 1rem;
+	}
+}

@@ -9,6 +9,7 @@ import { maintitle, transmit__mode_and_tonic } from "@styles/ChooseTonic.module.
 const ChooseTonic = () => {
 	const { data: session } = useSession();
 	const [scales, setScales] = useState([]);
+	const [selectedScale, setSelectedScale] = useState(null);
 
 	const router = useRouter();
 	const { mode } = router.query;
@@ -34,18 +35,22 @@ const ChooseTonic = () => {
 		fetchScales();
 	}, []);
 
+	const handleScaleSelection = (scale) => {
+		setSelectedScale(scale);
+	};
+
 	if (session) {
 		return (
 			<>
 				<h1 className={maintitle}>Choose a Tonic</h1>
-				<Dropdown scales={scales} mode={selectedMode} />
+				<Dropdown scales={scales} mode={selectedMode} onScaleSelect={handleScaleSelection} />
 
-				{scales && (
+				{selectedScale && (
 					<Link
 						className={transmit__mode_and_tonic}
 						href={{
 							pathname: "/content",
-							query: { mode, scales: JSON.stringify(scales) },
+							query: { mode, selectedScale: JSON.stringify(selectedScale) },
 						}}
 					>
 						Submit
