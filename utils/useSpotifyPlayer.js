@@ -81,7 +81,10 @@ const useSpotifyPlayer = () => {
 
 					if (response.ok) {
 						console.log("Playback started");
-						setIsPaused(false);
+						await player.connect();
+						await player.pause();
+						// console.log("playerstate: ", await player.getCurrentState());
+						setIsPaused(true);
 					} else {
 						const data = await response.json();
 						console.error("Error starting playback:", data);
