@@ -2,9 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    // domains: ["avatars.githubusercontent.com"],
-    domains: ["i.scdn.co"],
-},
+    remotePatterns: [
+      // {
+      //   hostname: "avatars.githubusercontent.com",
+      // },
+      {
+        hostname: "i.scdn.co",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
