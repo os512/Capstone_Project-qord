@@ -26,8 +26,6 @@ const useTrackInfosFromDB = (mode, key) => {
 		key = "A%23";
 	}
 
-	console.log("key: ", key);
-
 	const { data, error, isLoading } = useSWR(`/api/spotify/track?mode=${mode}&key=${key}`, fetcher);
 
 	return {
