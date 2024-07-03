@@ -11,7 +11,6 @@ const useSpotifyPlayer = () => {
 
 	useEffect(() => {
 		if (!accessToken) {
-			console.log("Access token is missing, cannot initialize player.");
 			return;
 		}
 
@@ -28,6 +27,7 @@ const useSpotifyPlayer = () => {
 					cb(accessToken);
 				},
 				volume: 0,
+				enableMediaSession: true,
 			});
 
 			setPlayer(newPlayer);
@@ -80,10 +80,18 @@ const useSpotifyPlayer = () => {
 
 					if (response.ok) {
 						console.log("Playback started");
+						console.count("label");
 						await player.connect();
+						console.count("label");
 						await player.setVolume(0.5);
+						console.count("label");
 						await player.pause();
+						console.count("label");
 						setIsPaused(true);
+						console.count("label");
+
+						console.log("newPlayer.getCurrentState: ", await player.getCurrentState());
+						
 					} else {
 						const data = await response.json();
 						console.error("Error starting playback:", data);

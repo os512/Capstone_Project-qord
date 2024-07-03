@@ -30,7 +30,6 @@ const SpotifyPlayer = ({ trackInfosFromDB, session }) => {
 
 	return (
 		<div className={spotify__container}>
-			{/* <h2>Spotify Player</h2> */}
 			{isReady ? (
 				currentTrack ? (
 					<div>
