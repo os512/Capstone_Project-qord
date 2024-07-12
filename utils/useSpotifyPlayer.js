@@ -10,14 +10,6 @@ const useSpotifyPlayer = () => {
 	const [deviceId, setDeviceId] = useState(null);
 	const sdkInitialized = useRef(false);
 
-	const pauseOnLoad = useCallback(async () => {
-		if (playerRef.current) {
-			await playerRef.current.pause();
-			console.log("Paused on load/refocus");
-			setIsPaused(true);
-		}
-	}, []);
-
 	useEffect(() => {
 		if (!accessToken || sdkInitialized.current) return;
 
@@ -57,7 +49,6 @@ const useSpotifyPlayer = () => {
 			console.log("Ready with Device ID", device_id);
 			setDeviceId(device_id);
 			setIsReady(true);
-			pauseOnLoad(); // Pause the player when it's ready
 		});
 
 		player.addListener("not_ready", ({ device_id }) => {
@@ -78,7 +69,6 @@ const useSpotifyPlayer = () => {
 		player.connect().then((success) => {
 			if (success) {
 				console.log("The Web Playback SDK successfully connected to Spotify!");
-				pauseOnLoad(); // Ensure the player is paused after connection
 			}
 		});
 
@@ -87,7 +77,7 @@ const useSpotifyPlayer = () => {
 				playerRef.current.disconnect();
 			}
 		};
-	}, [accessToken, pauseOnLoad]);
+	}, [accessToken]);
 
 	useEffect(() => {
 		if (sdkInitialized.current && accessToken) {
@@ -104,7 +94,6 @@ const useSpotifyPlayer = () => {
 						return;
 					}
 					console.log("Current track:", state.track_window.current_track);
-					pauseOnLoad(); // Pause the player when the page becomes visible
 				});
 			}
 		};
@@ -114,7 +103,7 @@ const useSpotifyPlayer = () => {
 		return () => {
 			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
-	}, [pauseOnLoad]);
+	}, []);
 
 	const play = useCallback(
 		async (trackId) => {
@@ -138,7 +127,6 @@ const useSpotifyPlayer = () => {
 
 				if (response.ok) {
 					console.log("Playback started");
-					setIsPaused(false);
 				} else {
 					const data = await response.json();
 					console.error("Error starting playback:", data);
