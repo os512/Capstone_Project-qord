@@ -34,7 +34,7 @@ const SpotifyPlayer = ({ trackInfosFromDB, session }) => {
 				currentTrack ? (
 					<div>
 						<Image
-						className={track__image}
+							className={track__image}
 							src={currentTrack.album.images[0].url}
 							alt="album cover"
 							width={100}
