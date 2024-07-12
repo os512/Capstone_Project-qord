@@ -39,7 +39,7 @@ const useSpotifyPlayer = () => {
 			getOAuthToken: (cb) => {
 				cb(accessToken);
 			},
-			volume: 0.5,
+			volume: 0,
 			enableMediaSession: true,
 		});
 
@@ -127,6 +127,13 @@ const useSpotifyPlayer = () => {
 
 				if (response.ok) {
 					console.log("Playback started");
+
+					await playerRef.current.connect();
+					await playerRef.current.pause();
+					await playerRef.current.setVolume(0.5);
+					setIsPaused(true);
+
+					console.log("newPlayer.getCurrentState: ", await playerRef.current.getCurrentState());
 				} else {
 					const data = await response.json();
 					console.error("Error starting playback:", data);
