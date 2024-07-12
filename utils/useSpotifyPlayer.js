@@ -1,18 +1,25 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import useRefreshToken from "./useRefreshToken";
 
 const useSpotifyPlayer = () => {
 	const { accessToken, isLoading, isError } = useRefreshToken();
-	const [player, setPlayer] = useState(null);
+	const playerRef = useRef(null);
 	const [isPaused, setIsPaused] = useState(true);
 	const [currentTrack, setCurrentTrack] = useState(null);
 	const [isReady, setIsReady] = useState(false);
 	const [deviceId, setDeviceId] = useState(null);
+	const sdkInitialized = useRef(false);
+
+	const pauseOnLoad = useCallback(async () => {
+		if (playerRef.current) {
+			await playerRef.current.pause();
+			console.log("Paused on load/refocus");
+			setIsPaused(true);
+		}
+	}, []);
 
 	useEffect(() => {
-		if (!accessToken) {
-			return;
-		}
+		if (!accessToken || sdkInitialized.current) return;
 
 		const script = document.createElement("script");
 		script.src = "https://sdk.scdn.co/spotify-player.js";
@@ -21,123 +28,170 @@ const useSpotifyPlayer = () => {
 		document.body.appendChild(script);
 
 		window.onSpotifyWebPlaybackSDKReady = () => {
-			const newPlayer = new window.Spotify.Player({
-				name: "Web Playback SDK Quick Start Player",
-				getOAuthToken: (cb) => {
-					cb(accessToken);
-				},
-				volume: 0,
-				enableMediaSession: true,
-			});
-
-			setPlayer(newPlayer);
-
-			newPlayer.addListener("ready", ({ device_id }) => {
-				console.log("Ready with Device ID", device_id);
-				setDeviceId(device_id);
-				setIsReady(true);
-			});
-
-			newPlayer.addListener("not_ready", ({ device_id }) => {
-				console.log("Device ID has gone offline", device_id);
-				setIsReady(false);
-			});
-
-			newPlayer.addListener("player_state_changed", (state) => {
-				if (!state) {
-					setIsPaused(true);
-					setCurrentTrack(null);
-					return;
-				}
-				setIsPaused(state.paused);
-				setCurrentTrack(state.track_window.current_track);
-			});
-			newPlayer.connect();
+			sdkInitialized.current = true;
+			console.log("Spotify SDK is ready");
+			initializePlayer();
 		};
 
 		return () => {
-			if (player) {
-				player.disconnect();
+			document.body.removeChild(script);
+			delete window.onSpotifyWebPlaybackSDKReady;
+		};
+	}, [accessToken]);
+
+	const initializePlayer = useCallback(() => {
+		if (!accessToken || playerRef.current) return;
+
+		const player = new window.Spotify.Player({
+			name: "Web Playback SDK Quick Start Player",
+			getOAuthToken: (cb) => {
+				cb(accessToken);
+			},
+			volume: 0.5,
+			enableMediaSession: true,
+		});
+
+		playerRef.current = player;
+
+		player.addListener("ready", ({ device_id }) => {
+			console.log("Ready with Device ID", device_id);
+			setDeviceId(device_id);
+			setIsReady(true);
+			pauseOnLoad(); // Pause the player when it's ready
+		});
+
+		player.addListener("not_ready", ({ device_id }) => {
+			console.log("Device ID has gone offline", device_id);
+			setIsReady(false);
+		});
+
+		player.addListener("player_state_changed", (state) => {
+			if (!state) {
+				setIsPaused(true);
+				setCurrentTrack(null);
+				return;
+			}
+			setIsPaused(state.paused);
+			setCurrentTrack(state.track_window.current_track);
+		});
+
+		player.connect().then((success) => {
+			if (success) {
+				console.log("The Web Playback SDK successfully connected to Spotify!");
+				pauseOnLoad(); // Ensure the player is paused after connection
+			}
+		});
+
+		return () => {
+			if (playerRef.current) {
+				playerRef.current.disconnect();
 			}
 		};
-	}, [accessToken]); // Do not use `player` here, even if VSCode complains about it: This causes feedback loops that lead to Spotify's request limits being exceeded!
+	}, [accessToken, pauseOnLoad]);
+
+	useEffect(() => {
+		if (sdkInitialized.current && accessToken) {
+			initializePlayer();
+		}
+	}, [accessToken, initializePlayer]);
+
+	useEffect(() => {
+		const handleVisibilityChange = () => {
+			if (!document.hidden && playerRef.current) {
+				playerRef.current.getCurrentState().then((state) => {
+					if (!state) {
+						console.log("User is not playing music through the Web Playback SDK");
+						return;
+					}
+					console.log("Current track:", state.track_window.current_track);
+					pauseOnLoad(); // Pause the player when the page becomes visible
+				});
+			}
+		};
+
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+
+		return () => {
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
+		};
+	}, [pauseOnLoad]);
 
 	const play = useCallback(
 		async (trackId) => {
-			if (deviceId && accessToken) {
-				try {
-					const response = await fetch(
-						`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
-						{
-							method: "PUT",
-							body: JSON.stringify({ uris: [`spotify:track:${trackId}`] }),
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: `Bearer ${accessToken}`,
-							},
-						}
-					);
+			if (!playerRef.current || !deviceId || !accessToken) {
+				console.log("Player not ready or missing deviceId/accessToken");
+				return;
+			}
 
-					if (response.ok) {
-						console.log("Playback started");
-						console.count("label");
-						await player.connect();
-						console.count("label");
-						await player.setVolume(0.5);
-						console.count("label");
-						await player.pause();
-						console.count("label");
-						setIsPaused(true);
-						console.count("label");
-
-						console.log("newPlayer.getCurrentState: ", await player.getCurrentState());
-						
-					} else {
-						const data = await response.json();
-						console.error("Error starting playback:", data);
-						throw new Error(data.error.message);
+			try {
+				const response = await fetch(
+					`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+					{
+						method: "PUT",
+						body: JSON.stringify({ uris: [`spotify:track:${trackId}`] }),
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${accessToken}`,
+						},
 					}
-				} catch (error) {
-					console.error("Error starting playback:", error);
+				);
+
+				if (response.ok) {
+					console.log("Playback started");
+					setIsPaused(false);
+				} else {
+					const data = await response.json();
+					console.error("Error starting playback:", data);
+					throw new Error(data.error.message);
 				}
+			} catch (error) {
+				console.error("Error starting playback:", error);
 			}
 		},
-		[deviceId, accessToken, player]
+		[deviceId, accessToken]
 	);
 
 	const pause = useCallback(async () => {
-		if (player) {
-			await player.pause();
+		if (playerRef.current) {
+			await playerRef.current.pause();
 			console.log("Paused!");
 			setIsPaused(true);
 		}
-	}, [player]);
+	}, []);
 
 	const resume = useCallback(async () => {
-		if (player) {
-			await player.resume();
+		if (playerRef.current) {
+			await playerRef.current.resume();
 			console.log("Resumed!");
 			setIsPaused(false);
 		}
-	}, [player]);
+	}, []);
 
 	const next = useCallback(async () => {
-		if (player) {
-			await player.connect();
-			await player.nextTrack();
+		if (playerRef.current) {
+			await playerRef.current.nextTrack();
 			console.log("Skipped to next track!");
 		}
-	}, [player]);
+	}, []);
 
 	const previous = useCallback(async () => {
-		if (player) {
-			await player.connect();
-			await player.previousTrack();
+		if (playerRef.current) {
+			await playerRef.current.previousTrack();
 			console.log("Skipped to previous track!");
 		}
-	}, [player]);
+	}, []);
 
-	return { player, isPaused, currentTrack, isReady, play, pause, resume, next, previous };
+	return {
+		player: playerRef.current,
+		isPaused,
+		currentTrack,
+		isReady,
+		play,
+		pause,
+		resume,
+		next,
+		previous,
+	};
 };
 
 export default useSpotifyPlayer;
