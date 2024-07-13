@@ -33,7 +33,7 @@ const ChooseTonic = () => {
 		};
 
 		fetchScales();
-	}, []);
+	}, [mode, router]);
 
 	const handleScaleSelection = (scale) => {
 		setSelectedScale(scale);

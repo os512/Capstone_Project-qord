@@ -30,12 +30,11 @@ const SpotifyPlayer = ({ trackInfosFromDB, session }) => {
 
 	return (
 		<div className={spotify__container}>
-			{/* <h2>Spotify Player</h2> */}
 			{isReady ? (
 				currentTrack ? (
 					<div>
 						<Image
-						className={track__image}
+							className={track__image}
 							src={currentTrack.album.images[0].url}
 							alt="album cover"
 							width={100}
